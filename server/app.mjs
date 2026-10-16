@@ -57,7 +57,7 @@ export function createApp({pool,auth,env=process.env,sendMail}){
     res.json({...p,id:u.id,email:u.email,role:u.role});
   });
   app.get('/api/products',async(req,res)=>{
-    const s=await session(req);let sql='SELECT * FROM products WHERE ($1::boolean OR active)';const params=[s?.user?.role==='admin'];
+    const s=await session(req);let sql='SELECT * FROM products WHERE ($1::boolean OR active)';const params=[s?.user?.role==='admin' && req.query.in_stock!=='true'];
     if(req.query.slug){params.push(String(req.query.slug));sql+=' AND slug=$2';}
     const {rows}=await pool.query(sql+' ORDER BY sort_order,id LIMIT 200',params);res.json({items:rows.map(product)});
   });

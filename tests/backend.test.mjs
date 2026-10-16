@@ -50,6 +50,7 @@ test('public catalog has eight products; product mutation and inactive access ar
  const p=r.data.items[0];assert.equal((await call('/api/products/'+p.id,{method:'PATCH',cookie:alice.cookie,body:{price:1}})).status,403);
  assert.equal((await call('/api/products/'+p.id,{method:'PATCH',cookie:admin.cookie,body:{in_stock:false}})).status,200);
  assert.equal((await call('/api/products?slug='+p.slug)).data.items.length,0);
+ assert.equal((await call('/api/products?in_stock=true&slug='+p.slug,{cookie:admin.cookie})).data.items.length,0);
  await call('/api/products/'+p.id,{method:'PATCH',cookie:admin.cookie,body:{in_stock:true}});
 });
 test('profile validation, role protection, owner-only addresses and atomic defaults',async()=>{

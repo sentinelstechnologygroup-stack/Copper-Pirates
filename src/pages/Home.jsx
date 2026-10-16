@@ -1,10 +1,19 @@
+import {useEffect,useState} from "react";
+import {api} from "@/api/client";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { Image } from "@/components/ui/image";
-import { spirits, distillery } from "@/data/spirits";
+import { distillery } from "@/data/spirits";
 import ReviewsSection from "@/components/ReviewsSection";
 
 export default function Home() {
+  const [spirits,setSpirits]=useState([]);
+  useEffect(()=>{
+    const controller=new AbortController();
+    api.entities.Product.filter({in_stock:true},{signal:controller.signal})
+      .then(r=>setSpirits(r.items.slice(0,3))).catch(()=>setSpirits([]));
+    return ()=>controller.abort();
+  },[]);
   return (
     <div className="bg-background">
       {/* Hero */}
@@ -73,7 +82,7 @@ export default function Home() {
             <div>
               <p className="font-label text-xs text-copper mb-4">The Manifest</p>
               <h2 className="font-display text-4xl md:text-5xl text-parchment leading-tight">
-                Three bottles from the hold
+                Bottles from the hold
               </h2>
             </div>
             <Link
@@ -86,9 +95,9 @@ export default function Home() {
 
           <div className="grid gap-8 md:grid-cols-3">
             {spirits.map((s) => (
-              <div
+              <Link to={`/spirits/${s.slug}`}
                 key={s.id}
-                className="group border border-border bg-card/50 hover:border-copper/50 transition-colors"
+                className="group block border border-border bg-card/50 hover:border-copper/50 transition-colors"
               >
                 <div className="aspect-[4/5] overflow-hidden bg-muted relative">
                   <Image
@@ -117,7 +126,7 @@ export default function Home() {
                     <span>{s.age}</span>
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>

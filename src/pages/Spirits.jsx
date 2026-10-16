@@ -23,12 +23,13 @@ export default function Spirits() {
       <PageHero
         label="The Manifest"
         title="A rum for whiskey country"
-        subtitle="Eight expressions, each pot-distilled in copper and proofed with mountain snowmelt. No shortcuts, no imitation. Just frontier rum."
+        subtitle="Explore the Copper Pirates collection. Final bottle photography, descriptions, specifications, and prices are awaiting owner approval."
         image={distillery.pourImage}
       />
 
       <section className="py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-6 lg:px-10">
+          <p className="mb-8 border border-copper/40 p-4 text-muted-foreground">Model catalog · Sample products and prices · Demo orders only.</p>
           {error ? <p role="alert">{error} <button className="underline" onClick={()=>window.location.reload()}>Retry</button></p> : loading ? (
             <div className="flex justify-center py-32">
               <div className="w-8 h-8 border-4 border-border border-t-copper rounded-full animate-spin" />
@@ -45,7 +46,7 @@ export default function Spirits() {
                 <div>
                   <p className="font-label text-xs text-copper mb-3">The Full Line</p>
                   <h2 className="font-display text-3xl md:text-4xl text-parchment">
-                    Eight expressions
+                    {products.length} expressions
                   </h2>
                 </div>
                 <p className="font-body text-muted-foreground max-w-xs md:text-right">
