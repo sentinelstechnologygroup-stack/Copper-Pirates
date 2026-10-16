@@ -1,0 +1,79 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Archivo+Narrow:wght@400;500;600;700&family=Cormorant:ital,wght@0,400;0,500;0,600;1,400&display=swap');
+
+@import "tailwindcss";
+@config "../tailwind.config.js";
+
+@layer base {
+  :root {
+    --background: 209 33% 6%;
+    --foreground: 38 45% 79%;
+    --card: 209 30% 9%;
+    --card-foreground: 38 45% 79%;
+    --popover: 209 30% 9%;
+    --popover-foreground: 38 45% 79%;
+    --primary: 29 57% 46%;
+    --primary-foreground: 38 45% 94%;
+    --secondary: 171 37% 17%;
+    --secondary-foreground: 38 45% 85%;
+    --muted: 209 25% 13%;
+    --muted-foreground: 38 28% 62%;
+    --accent: 29 57% 46%;
+    --accent-foreground: 38 45% 94%;
+    --destructive: 0 62% 45%;
+    --destructive-foreground: 38 45% 94%;
+    --border: 209 22% 17%;
+    --input: 209 22% 17%;
+    --ring: 29 57% 46%;
+    --copper: 29 57% 46%;
+    --pine: 171 37% 17%;
+    --parchment: 38 45% 79%;
+    --radius: 0.25rem;
+    --font-heading: "Archivo Narrow", sans-serif;
+    --font-body: "Cormorant Garamond", serif;
+    --font-display: "Cormorant Garamond", serif;
+    --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground font-body antialiased;
+  }
+
+  ::selection {
+    background-color: hsl(var(--copper));
+    color: hsl(var(--background));
+  }
+}
+
+@layer utilities {
+  .font-label {
+    font-family: "Archivo Narrow", sans-serif;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  .text-copper {
+    color: hsl(var(--copper));
+  }
+  .bg-copper {
+    background-color: hsl(var(--copper));
+  }
+  .border-copper {
+    border-color: hsl(var(--copper));
+  }
+  .hairline {
+    background-image: linear-gradient(to right, transparent, hsl(var(--border)), transparent);
+    height: 1px;
+  }
+}
+/* Predictable keyboard and touch behavior across account and checkout forms. */
+:focus-visible { outline: 2px solid #ffd092; outline-offset: 3px; }
+html { scroll-padding-top: 6rem; }
+@media (max-width: 767px) { input, select, textarea { font-size: 16px !important; } }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+}

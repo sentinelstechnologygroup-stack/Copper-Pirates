@@ -1,0 +1,3 @@
+# Review model: do not index placeholder content.
+User-agent: *
+Disallow: /

@@ -1,0 +1,156 @@
+import {request} from "@/api/client";
+import { useState } from "react";
+import { MapPin, Send } from "lucide-react";
+import { distillery } from "@/data/spirits";
+import PageHero from "@/components/PageHero";
+import LicensePlaceholder from "@/components/LicensePlaceholder";
+
+export default function Contact() {
+  const [error,setError]=useState("");
+  const [busy,setBusy]=useState(false);
+  const [sent, setSent] = useState(false);
+  const [form, setForm] = useState({ name: "", email: "", subject: "General", message: "" });
+
+  const update = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
+
+  const submit = async(e) => {
+    e.preventDefault();setBusy(true);setError("");
+    try{await request('/inquiries',{method:'POST',body:JSON.stringify(form)});setSent(true);}
+    catch(e){setError(e.message);}finally{setBusy(false);}
+  };
+
+  return (
+    <div className="bg-background">
+      <PageHero
+        label="Message in a Bottle"
+        title="Send word to the crew"
+        subtitle="Questions about our spirits, the craft, wholesale, or the distillery? Send word to the crew."
+        image={distillery.pourImage}
+      />
+
+      <section className="py-20 md:py-28">
+        <div className="mx-auto max-w-7xl px-6 lg:px-10 grid md:grid-cols-5 gap-12 md:gap-16">
+          {/* Form */}
+          <div className="md:col-span-3">
+            {sent ? (
+              <div className="border border-copper/40 bg-card/40 p-10 text-center">
+                <p className="font-display text-3xl text-parchment mb-4">
+                  Your message has been recorded.
+                </p>
+                <p className="font-body text-lg text-muted-foreground leading-relaxed">
+                  The crew can review your inquiry in the administration dashboard.
+                </p>
+                <button
+                  onClick={() => {
+                    setSent(false);
+                    setForm({ name: "", email: "", subject: "General", message: "" });
+                  }}
+                  className="mt-8 font-label text-xs tracking-widest text-copper hover:underline"
+                >
+                  Send another
+                </button>
+              </div>
+            ) : (
+              <form onSubmit={submit} className="space-y-6">{error && <p role="alert">{error}</p>}
+                <div className="grid sm:grid-cols-2 gap-6">
+                  <div>
+                    <label htmlFor="field-name" className="font-label text-[10px] text-copper block mb-2">
+                      Name
+                    </label><input id="field-name"
+                      required
+                      value={form.name}
+                      onChange={update("name")}
+                      className="w-full bg-transparent border-b border-border py-3 font-body text-lg text-parchment focus:border-copper outline-none transition-colors"
+                      placeholder="Your name"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="field-email" className="font-label text-[10px] text-copper block mb-2">
+                      Email
+                    </label><input id="field-email"
+                      required
+                      type="email"
+                      value={form.email}
+                      onChange={update("email")}
+                      className="w-full bg-transparent border-b border-border py-3 font-body text-lg text-parchment focus:border-copper outline-none transition-colors"
+                      placeholder="you@email.com"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="font-label text-[10px] text-copper block mb-2">
+                    Subject
+                  </label>
+                  <select
+                    value={form.subject}
+                    onChange={update("subject")}
+                    className="w-full bg-background border-b border-border py-3 font-body text-lg text-parchment focus:border-copper outline-none transition-colors"
+                  >
+                    <option>General</option>
+                    <option>Wholesale</option>
+                    <option>Events</option>
+                    <option>Other</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="font-label text-[10px] text-copper block mb-2">
+                    Message
+                  </label>
+                  <textarea
+                    required
+                    rows={5}
+                    value={form.message}
+                    onChange={update("message")}
+                    className="w-full bg-transparent border-b border-border py-3 font-body text-lg text-parchment focus:border-copper outline-none transition-colors resize-none"
+                    placeholder="What's on your mind?"
+                  />
+                </div>
+
+                <button
+                  type="submit" disabled={busy}
+                  className="inline-flex items-center gap-3 px-8 py-4 bg-copper text-background font-label text-sm tracking-widest uppercase hover:bg-copper/90 transition-colors"
+                >
+                  Send message <Send size={16} />
+                </button>
+              </form>
+            )}
+          </div>
+
+          {/* Details */}
+          <div className="md:col-span-2 space-y-8">
+            <div>
+              <p className="font-label text-xs text-copper mb-5">Direct Line</p>
+              <p className="bg-yellow-200 text-black p-3">XXXX — Business phone</p>
+              <p className="bg-yellow-200 text-black p-3">XXXX — Business email</p>
+            </div>
+
+            <div>
+              <p className="font-label text-xs text-copper mb-5">Home Port</p>
+              <p className="font-body text-lg text-muted-foreground leading-relaxed flex items-start gap-3">
+                <MapPin size={18} className="mt-1 shrink-0 text-copper/70" />
+                <span>
+                  {distillery.city}, {distillery.state} {distillery.zip}
+                  <br />
+                  <span className="font-label text-xs text-muted-foreground/70">
+                    {distillery.coordinates}
+                  </span>
+                </span>
+              </p>
+            </div>
+
+            <div>
+              <p className="font-label text-xs text-copper mb-5">Licensing</p>
+              <div className="flex flex-col gap-3">
+                <LicensePlaceholder label="Licensing authority and distiller license #" />
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}

@@ -1,0 +1,178 @@
+[
+  {
+    "id": "6ad03f28726d1ab6f10a7a1b",
+    "name": "Highline Spiced Rum",
+    "slug": "highline-spiced",
+    "tagline": "The frontier bottle",
+    "description": "Our flagship spiced rum, distilled high in the Rockies. Cinnamon, toasted oak, and a whisper of Montana huckleberry ride a velvety molasses backbone. It drinks like a campfire at the edge of the sea.",
+    "price": 48,
+    "abv": "42% ABV",
+    "age": "Unaged · Pot Distilled",
+    "elevation": "2,956 ft",
+    "color": "#9a5a1f",
+    "notes": [
+      "Cinnamon",
+      "Toasted Oak",
+      "Huckleberry",
+      "Molasses"
+    ],
+    "image": "/images/rum-pour.png",
+    "volume_ml": 750,
+    "in_stock": true,
+    "sort_order": 1
+  },
+  {
+    "id": "6ad03f28726d1ab6f10a7a1c",
+    "name": "Copper Reef Dark Rum",
+    "slug": "copper-reef",
+    "tagline": "Aged in charred oak",
+    "description": "Three years in heavily charred American oak give this dark rum its deep amber hue and long, smoky finish. Burnt sugar, allspice, and a briny minerality that betrays its mountain origin.",
+    "price": 58,
+    "abv": "45% ABV",
+    "age": "Aged 3 years",
+    "elevation": "2,956 ft",
+    "color": "#6b3a14",
+    "notes": [
+      "Burnt Sugar",
+      "Allspice",
+      "Smoke",
+      "Sea Salt"
+    ],
+    "image": "/images/rum-pour.png",
+    "volume_ml": 750,
+    "in_stock": true,
+    "sort_order": 2
+  },
+  {
+    "id": "6ad03f28726d1ab6f10a7a1d",
+    "name": "Galleon Gold Rum",
+    "slug": "galleon-gold",
+    "tagline": "The captain's pour",
+    "description": "A brighter, golden rum finished in used bourbon casks. Honey, banana, and citrus zest lead into a clean, warm finish. Built for cocktails and long afternoons.",
+    "price": 52,
+    "abv": "40% ABV",
+    "age": "Aged 18 months",
+    "elevation": "2,956 ft",
+    "color": "#c98a3a",
+    "notes": [
+      "Honey",
+      "Banana",
+      "Citrus Zest",
+      "Vanilla"
+    ],
+    "image": "/images/rum-pour.png",
+    "volume_ml": 750,
+    "in_stock": true,
+    "sort_order": 3
+  },
+  {
+    "id": "6ad04bfd606095455d2f8e51",
+    "name": "Snowmelt Silver Rum",
+    "slug": "snowmelt-silver",
+    "tagline": "Unaged · cocktail-ready",
+    "description": "A bright, unaged rum proofed with mountain snowmelt. Crisp sugarcane and a clean, peppery finish built for tiki classics and highballs. (Placeholder copy — replace with the real description.)",
+    "price": 44,
+    "abv": "40% ABV",
+    "age": "Unaged · Pot Distilled",
+    "elevation": "2,956 ft",
+    "color": "#d9c2a0",
+    "notes": [
+      "Sugarcane",
+      "Citrus",
+      "White Pepper",
+      "Clean Finish"
+    ],
+    "image": "/images/rum-pour.png",
+    "volume_ml": 750,
+    "in_stock": true,
+    "sort_order": 4
+  },
+  {
+    "id": "6ad04bfd606095455d2f8e52",
+    "name": "Black Powder Navy Rum",
+    "slug": "black-powder-navy",
+    "tagline": "Navy strength · 57%",
+    "description": "Navy-strength rum at 114 proof, aged two years in charred oak. Bold blackstrap molasses, tobacco, and a long, warming spice. For drinkers who like it loud. (Placeholder copy — replace with the real description.)",
+    "price": 62,
+    "abv": "57% ABV",
+    "age": "Aged 2 years",
+    "elevation": "2,956 ft",
+    "color": "#4a2a12",
+    "notes": [
+      "Blackstrap Molasses",
+      "Tobacco",
+      "Oak",
+      "Spice"
+    ],
+    "image": "/images/rum-pour.png",
+    "volume_ml": 750,
+    "in_stock": true,
+    "sort_order": 5
+  },
+  {
+    "id": "6ad04bfd606095455d2f8e53",
+    "name": "Huckleberry Private Reserve",
+    "slug": "huckleberry-reserve",
+    "tagline": "Limited · seasonal",
+    "description": "A limited seasonal rum infused with wild Montana huckleberries. Jammy berry, soft vanilla, and a bright citrus lift. Available only at the distillery. (Placeholder copy — replace with the real description.)",
+    "price": 54,
+    "abv": "35% ABV",
+    "age": "Infused · Unaged",
+    "elevation": "2,956 ft",
+    "color": "#6b2d7a",
+    "notes": [
+      "Wild Huckleberry",
+      "Vanilla",
+      "Citrus",
+      "Soft Oak"
+    ],
+    "image": "/images/rum-pour.png",
+    "volume_ml": 750,
+    "in_stock": true,
+    "sort_order": 6
+  },
+  {
+    "id": "6ad04bfd606095455d2f8e54",
+    "name": "Privateer Single Barrel",
+    "slug": "privateer-single-barrel",
+    "tagline": "Cask strength · single barrel",
+    "description": "Hand-selected single barrels bottled at cask strength. Each barrel is unique — dark cherry, leather, and cocoa in a powerful, uncut pour. Numbered by hand. (Placeholder copy — replace with the real description.)",
+    "price": 75,
+    "abv": "63% ABV",
+    "age": "Aged 4 years",
+    "elevation": "2,956 ft",
+    "color": "#8a4a1a",
+    "notes": [
+      "Dark Cherry",
+      "Leather",
+      "Cocoa",
+      "Toasted Oak"
+    ],
+    "image": "/images/rum-pour.png",
+    "volume_ml": 750,
+    "in_stock": true,
+    "sort_order": 7
+  },
+  {
+    "id": "6ad04bfd606095455d2f8e55",
+    "name": "Compass Rose Reserve",
+    "slug": "compass-rose-reserve",
+    "tagline": "Aged 5 years · flagship reserve",
+    "description": "Our five-year reserve, finished in Pedro Ximénez casks. Layered caramel, dried fig, and toasted almond with a long, elegant oak finish. The captain's private stock. (Placeholder copy — replace with the real description.)",
+    "price": 89,
+    "abv": "46% ABV",
+    "age": "Aged 5 years",
+    "elevation": "2,956 ft",
+    "color": "#b5722a",
+    "notes": [
+      "Caramel",
+      "Dried Fig",
+      "Almond",
+      "Long Oak"
+    ],
+    "image": "/images/rum-pour.png",
+    "volume_ml": 750,
+    "in_stock": true,
+    "sort_order": 8
+  }
+]
