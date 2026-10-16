@@ -4,7 +4,7 @@ import {toNodeHandler,fromNodeHeaders} from 'better-auth/node';
 import {randomUUID,createHash} from 'node:crypto';
 import {put} from '@vercel/blob';
 import {one,transaction,problem} from './db.mjs';
-import {profileSchema,addressSchema,productSchema,reviewSchema,inquirySchema,orderSchema} from './validation.mjs';
+import {profileSchema,addressSchema,productSchema,reviewSchema,inquirySchema,orderSchema,distributorInquirySchema} from './validation.mjs';
 import {isAdult} from '../src/lib/commerce.mjs';
 import {authorizedCron,flushMail} from './mail.mjs';
 const product=row=>({...row.data,id:row.id,price:row.price_cents/100,in_stock:row.active,sort_order:row.sort_order});
@@ -22,7 +22,17 @@ export function createApp({pool,auth,env=process.env,sendMail}){
     if(!['GET','HEAD','OPTIONS'].includes(req.method) && req.headers.origin!==origin)return res.status(403).json({error:'Request origin is not allowed'});
     next();
   });
+  app.use('/api/auth',(req,res,next)=>{
+    if(env.COMMERCE_ENABLED!=='true' && req.path==='/sign-up/email')return res.status(403).json({error:'Public account registration is currently closed.'});
+    next();
+  });
   app.all('/api/auth/*splat',toNodeHandler(auth));
+  // Commerce remains preserved but requires an independent server opt-in.
+  app.use('/api',(req,res,next)=>{
+    const off=env.COMMERCE_ENABLED!=='true';
+    if(off && (req.path==='/orders' && req.method==='POST' || req.path.startsWith('/payment-methods') && !['GET','HEAD'].includes(req.method)))return res.status(403).json({error:'Public ordering is currently unavailable. Please use our distribution inquiry form.'});
+    next();
+  });
   app.get('/api/health',async(req,res)=>{
     try{await pool.query('SELECT 1');res.json({ok:true,commerce:'demo',emailConfigured:!!(env.RESEND_API_KEY&&env.EMAIL_FROM)});}
     catch{res.status(503).json({ok:false,error:'Database unavailable'});}
@@ -57,7 +67,7 @@ export function createApp({pool,auth,env=process.env,sendMail}){
     res.json({...p,id:u.id,email:u.email,role:u.role});
   });
   app.get('/api/products',async(req,res)=>{
-    const s=await session(req);let sql='SELECT * FROM products WHERE ($1::boolean OR active)';const params=[s?.user?.role==='admin' && req.query.in_stock!=='true'];
+    const s=await session(req);if(env.COMMERCE_ENABLED!=='true' && s?.user?.role!=='admin')return res.json({items:[]});let sql='SELECT * FROM products WHERE ($1::boolean OR active)';const params=[s?.user?.role==='admin' && req.query.in_stock!=='true'];
     if(req.query.slug){params.push(String(req.query.slug));sql+=' AND slug=$2';}
     const {rows}=await pool.query(sql+' ORDER BY sort_order,id LIMIT 200',params);res.json({items:rows.map(product)});
   });
@@ -165,13 +175,32 @@ export function createApp({pool,auth,env=process.env,sendMail}){
       if(env.CONTACT_EMAIL)await db.query('INSERT INTO email_outbox(id,recipient,subject,body) VALUES($1,$2,$3,$4)',[randomUUID(),env.CONTACT_EMAIL,`Website inquiry: ${p.subject}`,`${p.name} <${p.email}>\n\n${p.message}`]);
     });res.status(201).json({ok:true,id});
   });
+  app.post('/api/distributor-inquiries',async(req,res)=>{
+    await rate(req,'trade',5);
+    const p=distributorInquirySchema.parse(req.body);
+    if(p.website)return res.status(201).json({ok:true});
+    const id=randomUUID();
+    const {website,...details}=p;
+    await transaction(pool,async db=>{
+      await db.query('INSERT INTO inquiries(id,data) VALUES($1,$2)',[id,{...details,subject:'Wholesale',inquiry_type:'distribution',consent_at:new Date().toISOString(),follow_up_notes:''}]);
+      if(env.CONTACT_EMAIL)await db.query('INSERT INTO email_outbox(id,recipient,subject,body) VALUES($1,$2,$3,$4)',[randomUUID(),env.CONTACT_EMAIL,'Copper Pirates distributor inquiry',`${p.company} — ${p.name} <${p.email}>\nTerritory: ${p.territory}\nInterest: ${p.interest}\n\n${p.message}`]);
+    });
+    res.status(201).json({ok:true,id});
+  });
   app.get('/api/admin/orders',async(req,res)=>{await admin(req);res.json({items:(await pool.query('SELECT * FROM orders ORDER BY created_at DESC LIMIT 200')).rows.map(order)});});
   app.patch('/api/admin/orders/:id',async(req,res)=>{
     const u=await admin(req);if(req.body.status!=='cancelled')throw problem(400,'Demo orders can only be cancelled');
     const row=await transaction(pool,async db=>{const r=await one(db,"UPDATE orders SET status='cancelled',updated_at=now() WHERE id=$1 RETURNING *",[req.params.id]);if(!r)throw problem(404,'Order not found');await audit(db,u.id,'order.cancelled',r.id);return r;});res.json(order(row));
   });
   app.get('/api/admin/inquiries',async(req,res)=>{await admin(req);res.json({items:(await pool.query('SELECT * FROM inquiries ORDER BY created_at DESC LIMIT 200')).rows.map(r=>({...r.data,id:r.id,status:r.status,created_date:r.created_at}))});});
-  app.patch('/api/admin/inquiries/:id',async(req,res)=>{const u=await admin(req);if(!['new','resolved'].includes(req.body.status))throw problem(400,'Invalid status');const row=await one(pool,'UPDATE inquiries SET status=$2 WHERE id=$1 RETURNING id',[req.params.id,req.body.status]);if(!row)throw problem(404,'Inquiry not found');await audit(pool,u.id,'inquiry.updated',row.id);res.json({ok:true});});
+  app.patch('/api/admin/inquiries/:id',async(req,res)=>{
+    const u=await admin(req);
+    if(!['new','contacted','reviewing','resolved'].includes(req.body.status))throw problem(400,'Invalid status');
+    const notes=req.body.follow_up_notes;
+    if(notes!==undefined&&(typeof notes!=='string'||notes.length>5000))throw problem(400,'Invalid follow-up notes');
+    const row=await one(pool,"UPDATE inquiries SET status=$2,data=CASE WHEN $3::text IS NULL THEN data ELSE jsonb_set(data,'{follow_up_notes}',to_jsonb($3::text)) END WHERE id=$1 RETURNING id",[req.params.id,req.body.status,notes??null]);
+    if(!row)throw problem(404,'Inquiry not found');await audit(pool,u.id,'inquiry.updated',row.id);res.json({ok:true});
+  });
   app.get('/api/admin/audit',async(req,res)=>{await admin(req);res.json({items:(await pool.query('SELECT * FROM audit_events ORDER BY created_at DESC LIMIT 200')).rows});});
   app.post('/api/uploads',async(req,res,next)=>{await admin(req);next();},express.raw({type:['image/png','image/jpeg','image/webp'],limit:'3mb'}),async(req,res)=>{
     const u=await admin(req);if(!env.BLOB_READ_WRITE_TOKEN)throw problem(503,'Image storage is not connected. Configure BLOB_READ_WRITE_TOKEN.');

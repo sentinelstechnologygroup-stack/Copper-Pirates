@@ -1,5 +1,11 @@
 # Copper Pirates
 
+## Current relaunch mode
+
+The public site now promotes the flagship rum and distributor inquiries. Shopping code, customer accounts, sample inventory and order history are preserved, with public shopping routes, signup, checkout and order creation disabled by default. Both VITE_COMMERCE_ENABLED and COMMERCE_ENABLED must be independently enabled for a future commerce phase. No public pricing or sample eight-bottle lineup is presented. Staff access remains at /admin.
+
+The proposed label proof is credited to Treeline Creative. Product specifications and producer attribution remain unconfirmed. Trade inquiries collect company, territory, interest and contact consent, with staff statuses and follow-up notes. Apply migration 002 before using the new follow-up statuses.
+
 Standalone Copper Pirates Distillery storefront and backend. Vite + React, Express, Better Auth, PostgreSQL, optional Vercel Blob uploads and Resend email. No Base44 SDK, build plugin, API, hosted media, or runtime is required.
 
 The current site is a review model: eight sample spirits, supplied cocktail ingredient lists, approved pirate favicon, and highlighted owner-information placeholders. Every order is explicitly a **demo**. This backend cannot charge a card or authorize alcohol fulfillment.

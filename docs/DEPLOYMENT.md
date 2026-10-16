@@ -38,3 +38,11 @@ Before public launch: replace every XXXX/sample claim and image, approve busines
 ## Rollback
 
 Promote a previously verified Vercel deployment only against a compatible schema. Back up PostgreSQL before applying future destructive migrations. Keep this initial migration additive; seeds never overwrite administrator edits. Rotate secrets privately if they are exposed, and revoke customer sessions after auth-secret changes.
+
+## Distributor relaunch release
+
+Keep COMMERCE_ENABLED and VITE_COMMERCE_ENABLED false (omitted also means false). Public account/signup/checkout/order routes redirect to /distribution, legacy product URLs redirect to /spirits, and server order creation/payment mutation/signup are rejected. The legacy sample catalog is visible only to admins while commerce is off. Staff sign-in remains available through /admin.
+
+Apply migrations 001 and 002 with `npm run db:migrate` against the configured database. The new /api/distributor-inquiries endpoint saves consent, company, territory, inquiry type, interest and message into the existing inquiries table. Admin follow-up supports new, contacted, reviewing and resolved, plus notes. Notifications still require the email provider and scheduler documented above.
+
+The pre-release hosted /api/health check returned 503, backend configuration incomplete. Public pages do not depend on that service, but distributor/contact submissions require DATABASE_URL, BETTER_AUTH_SECRET, BETTER_AUTH_URL and completed migrations. Until connected, forms display an explicit unavailable message; no success is simulated.

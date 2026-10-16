@@ -1,10 +1,11 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-const brand="Copper Pirates Distillery";
+const brand="Copper Pirates Montana Rum";
 const routes={
- "/cocktails":["Signature Rum Cocktails","Explore Copper Pirates cocktails featuring white, orange-clove and huckleberry reserve rum, with ingredient lists from the supplied menu."],
+ "/distribution":["Montana Rum Distribution Inquiries","Explore Copper Pirates Montana Rum and discuss potential Montana, regional and national distribution partnerships. Territory availability and launch details are confirmed directly."],
+ "/cocktails":["Signature Rum Cocktails","Explore serving concepts for the Copper Pirates flagship rum. Final recipes and product details await approval."],
  "/":["Montana Rum Distillery in Kalispell", "Discover a family-owned Montana rum distillery. Explore the rum collection, our craft and the story behind Converting Cowboys to Pirates. Everyday."],
- "/spirits":["Our Rum Collection","Explore rum descriptions, bottle details and cocktail inspiration from Copper Pirates Distillery in Kalispell, Montana."],
+ "/spirits":["Our Flagship Rum","Meet the Copper Pirates Montana Rum relaunch, proposed packaging, product story, and distributor inquiry information."],
  "/craft":["Our Distilling Craft","Explore the inspiration and craft behind our Montana rum."],
  "/about":["Our Family Story","Meet the family-owned distillery building a distinctive rum brand in Kalispell, Montana."],
  "/contact":["Contact the Distillery","Contact Copper Pirates Distillery about rum, distribution and business inquiries."],
@@ -29,7 +30,7 @@ export default function Seo() {
   document.title=title;setMeta("description",route[1]);
   setMeta("og:title",title,true);setMeta("og:description",route[1],true);setMeta("og:type","website",true);
   setMeta("og:site_name",brand,true);setMeta("twitter:card","summary");
-  const publicRoute=["/","/spirits","/craft","/about","/contact","/cocktails"].includes(pathname)||pathname.startsWith("/spirits/");
+  const publicRoute=["/","/spirits","/craft","/about","/contact","/cocktails","/distribution"].includes(pathname)||pathname.startsWith("/spirits/");
   const raw=import.meta.env.VITE_SITE_URL;
   let origin="";
   try{const u=new URL(raw);if(u.protocol==="https:")origin=u.origin;}catch { /* awaiting final domain */ }

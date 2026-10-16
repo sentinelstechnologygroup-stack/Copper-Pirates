@@ -1,3 +1,4 @@
+import {commerceEnabled} from "@/data/relaunch";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { api } from "@/api/client";
@@ -34,9 +35,9 @@ export default function Login() {
   return (
     <AuthLayout
       icon={LogIn}
-      title="Welcome back"
-      subtitle="Log in to your account"
-      footer={
+      title={commerceEnabled?"Welcome back":"Staff sign in"}
+      subtitle={commerceEnabled?"Log in to your account":"Copper Pirates administration"}
+      footer={commerceEnabled &&
         <>
           Don't have an account?{" "}
           <Link

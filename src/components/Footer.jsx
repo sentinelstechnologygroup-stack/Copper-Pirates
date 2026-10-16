@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { MapPin } from "lucide-react";
 import { distillery } from "@/data/spirits";
+import BrandMark from "@/components/BrandMark";
 import LicensePlaceholder from "@/components/LicensePlaceholder";
 
 export default function Footer() {
@@ -10,11 +11,10 @@ export default function Footer() {
         <div className="grid gap-12 md:grid-cols-4">
           <div className="md:col-span-2">
             <p className="font-display text-2xl text-parchment mb-3">
-              Copper Pirates Distillery
+              <BrandMark />
             </p>
             <p className="font-body text-muted-foreground leading-relaxed max-w-sm">
-              Converting Cowboys to Pirates. Everyday. A distinct Caribbean-style rum,
-              distilled high in the Rocky Mountains of Northwest Montana.
+              Converting Cowboys to Pirates. Everyday. A family-owned Montana rum brand beginning a focused relaunch.
             </p>
           </div>
 
@@ -22,10 +22,11 @@ export default function Footer() {
             <p className="font-label text-[11px] text-copper mb-5">Explore</p>
             <ul className="space-y-3">
               {[
-                { label: "Our Spirits", path: "/spirits" },
+                { label: "Our Rum", path: "/spirits" },
                 { label: "Cocktails", path: "/cocktails" },
   { label: "The Craft", path: "/craft" },
                 { label: "Our Story", path: "/about" },
+                { label: "Distribution", path: "/distribution" },
                 { label: "Contact", path: "/contact" },
               ].map((l) => (
                 <li key={l.path}>
@@ -51,17 +52,17 @@ export default function Footer() {
         </div>
 
         <nav aria-label="Customer information" className="flex flex-wrap gap-x-6 gap-y-4 mt-10">
-          {[["privacy","Privacy"],["terms","Terms"],["shipping","Shipping & Pickup"],["returns","Returns & Support"],["responsible","Responsible Consumption"]].map(([slug,label])=><Link className="underline" key={slug} to={"/policies/"+slug}>{label}</Link>)}
+          {[["privacy","Privacy"],["terms","Terms"],["responsible","Responsible Consumption"]].map(([slug,label])=><Link className="underline" key={slug} to={"/policies/"+slug}>{label}</Link>)}
         </nav>
         <div className="hairline my-10" />
 
         <div className="flex flex-col gap-4">
-          <LicensePlaceholder />
+          <LicensePlaceholder label="Legal producer name, attribution, licensing authority and disclosures" />
         </div>
         <div className="hairline my-6" />
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="font-label text-[10px] text-muted-foreground/70 tracking-widest">
-            © {new Date().getFullYear()} Copper Pirates Distillery · All rights reserved
+            © {new Date().getFullYear()} Copper Pirates Montana Rum · All rights reserved
           </p>
           <p className="font-label text-[10px] text-muted-foreground/70 tracking-widest text-center">
             Please drink responsibly · 21+ only

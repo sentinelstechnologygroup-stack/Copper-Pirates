@@ -1,3 +1,4 @@
+import {Link} from "react-router-dom";
 import {request} from "@/api/client";
 import { useState } from "react";
 import { MapPin, Send } from "lucide-react";
@@ -16,7 +17,7 @@ export default function Contact() {
   const submit = async(e) => {
     e.preventDefault();setBusy(true);setError("");
     try{await request('/inquiries',{method:'POST',body:JSON.stringify(form)});setSent(true);}
-    catch(e){setError(e.message);}finally{setBusy(false);}
+    catch(e){setError(e.status===503?"The contact service is not available yet. Please reach out to the representative who shared this preview.":e.message);}finally{setBusy(false);}
   };
 
   return (
@@ -24,12 +25,13 @@ export default function Contact() {
       <PageHero
         label="Message in a Bottle"
         title="Send word to the crew"
-        subtitle="Questions about our spirits, the craft, wholesale, or the distillery? Send word to the crew."
+        subtitle="Questions about Copper Pirates, the relaunch, or the product? For trade opportunities, use our dedicated distributor inquiry page."
         image={distillery.pourImage}
       />
 
       <section className="py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-6 lg:px-10 grid md:grid-cols-5 gap-12 md:gap-16">
+          <Link to="/distribution" className="md:col-span-5 border border-copper p-5 text-copper underline">Distribution, product information or sample requests? Start a trade conversation.</Link>
           {/* Form */}
           <div className="md:col-span-3">
             {sent ? (

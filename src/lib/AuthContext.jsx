@@ -1,3 +1,4 @@
+import {commerceEnabled} from "@/data/relaunch";
 import { createContext, useState, useContext, useEffect, useCallback, useRef } from "react";
 import { api,identity } from "@/api/client";
 import { queryClientInstance } from "@/lib/query-client";
@@ -28,6 +29,9 @@ export function AuthProvider({children}) {
     setLoadingSettings(true);
     setSettings({name:'Copper Pirates'});
     setLoadingSettings(false);
+    if(!commerceEnabled && !/^\/(admin|login|forgot-password|reset-password)(?:\/|$)/.test(window.location.pathname)){
+      setUser(null);setLoading(false);setChecked(true);return;
+    }
     await checkUserAuth();
   },[checkUserAuth]);
   useEffect(()=>{

@@ -13,3 +13,7 @@ The shopping story runs from the React screens through the same-origin API into 
 | Desktop/mobile | Desktop home and 390-pixel mobile navigation rendered and inspected. Mobile has no horizontal document overflow. Cart supports focus containment, Escape and focus restoration. |
 
 No live Vercel database, email sender, Blob store, payment/POS or shipping account has been configured by these local checks. Those integrations need the deployment environment and the acceptance checks in DEPLOYMENT.md. Real alcohol sales remain disabled. The model is noindex and still contains highlighted owner-content placeholders.
+
+## Distributor relaunch verification
+
+Thirteen backend tests cover the retained commerce behaviors, default-off registration/order/payment gates, trade inquiry validation and consent, role-protected follow-up statuses and notes. A separate browser journey verifies the single flagship, redirects from shopping/legacy product routes, no public cart, SQL-backed distributor submission, trade PDF download and mobile navigation. The new packaging is a proposed proof, not a final approved logo or photograph. No database migration is claimed as applied to the hosted site while its credentials are unconfigured.

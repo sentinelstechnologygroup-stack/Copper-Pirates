@@ -1,3 +1,5 @@
+import {commerceEnabled} from "@/data/relaunch";
+import BrandMark from "@/components/BrandMark";
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X, ShoppingBag, User, LogOut } from "lucide-react";
@@ -6,10 +8,10 @@ import { useAuth } from "@/lib/AuthContext";
 
 const links = [
   { label: "Home", path: "/" },
-  { label: "Spirits", path: "/spirits" },
-  { label: "Cocktails", path: "/cocktails" },
-  { label: "The Craft", path: "/craft" },
+  { label: "Our Rum", path: "/spirits" },
   { label: "Our Story", path: "/about" },
+  { label: "The Craft", path: "/craft" },
+  { label: "Distribution", path: "/distribution" },
   { label: "Contact", path: "/contact" },
 ];
 
@@ -30,12 +32,7 @@ export default function Navbar() {
     >
       <nav className="mx-auto max-w-7xl px-4 sm:px-6 xl:px-10 flex items-center justify-between gap-3 h-20">
         <Link to="/" className="group flex items-center gap-3">
-          <span className="font-display text-xl md:text-2xl tracking-wide text-parchment leading-none">
-            Copper Pirates
-          </span>
-          <span className="hidden sm:block font-label text-[10px] text-copper leading-none border-l border-border pl-3">
-            Distillery · MT
-          </span>
+          <BrandMark />
         </Link>
 
         <div className="hidden xl:flex items-center gap-5">
@@ -68,6 +65,7 @@ export default function Navbar() {
 
         <div className="flex items-center gap-1 sm:gap-2 shrink-0">
           {isAuthenticated && <button onClick={logout} aria-label="Log out" title="Log out" className="hidden xl:inline-flex min-h-11 items-center gap-2 px-3 text-sm text-[#fff4e1] hover:text-[#ffd092]"><LogOut size={18} /> Log out</button>}
+          {commerceEnabled && <>
           <Link
             to={isAuthenticated ? "/account" : "/login?returnTo=%2Faccount"}
             aria-label={isAuthenticated ? "My account" : "Log in"}
@@ -87,6 +85,7 @@ export default function Navbar() {
               </span>
             )}
           </button>
+          </>}
           <button
             onClick={() => setOpen((v) => !v)}
             className="xl:hidden w-11 h-11 inline-flex items-center justify-center rounded-md text-[#fff4e1] hover:bg-white/10"

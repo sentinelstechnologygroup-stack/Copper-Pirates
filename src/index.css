@@ -77,3 +77,5 @@ html { scroll-padding-top: 6rem; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
 }
+
+.relaunch-contours { background-image: repeating-radial-gradient(ellipse at 80% 50%,transparent 0 24px,rgba(202,151,86,.18) 25px 26px,transparent 27px 48px); }

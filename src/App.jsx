@@ -1,3 +1,5 @@
+import {commerceEnabled} from "@/data/relaunch";
+import Distribution from "@/pages/Distribution";
 import { Toaster } from "@/components/ui/toaster"
 import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClientInstance } from '@/lib/query-client'
@@ -56,24 +58,26 @@ const AuthenticatedApp = () => {
   // Render the main app
   return (
     <Routes>
+      {!commerceEnabled && ['/account','/checkout','/order/:id','/register'].map(path=><Route key={path} path={path} element={<Navigate to="/distribution" replace />}/>)}
       <Route element={<Layout />}>
         <Route path="/" element={<Home />} />
         <Route path="/spirits" element={<Spirits />} />
-        <Route path="/spirits/:slug" element={<ProductDetail />} />
+        <Route path="/spirits/:slug" element={commerceEnabled?<ProductDetail />:<Navigate to="/spirits" replace />} />
+        <Route path="/distribution" element={<Distribution />} />
         <Route path="/cocktails" element={<Cocktails />} />
         <Route path="/craft" element={<Craft />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/policies/:section" element={<Policy />} />
         <Route element={<ProtectedRoute unauthenticatedElement={<Navigate to="/login" replace />} />}>
-          <Route path="/order/:id" element={<OrderConfirmation />} />
-          <Route path="/checkout" element={<Checkout />} />
-          <Route path="/account" element={<Account />} />
+          <Route path="/order/:id" element={commerceEnabled?<OrderConfirmation />:<Navigate to="/distribution" replace />} />
+          <Route path="/checkout" element={commerceEnabled?<Checkout />:<Navigate to="/distribution" replace />} />
+          <Route path="/account" element={commerceEnabled?<Account />:<Navigate to="/distribution" replace />} />
           <Route path="/admin" element={<Admin />} />
         </Route>
       </Route>
       <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
+      <Route path="/register" element={commerceEnabled?<Register />:<Navigate to="/distribution" replace />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/reset-password" element={<ResetPassword />} />
       <Route path="*" element={<PageNotFound />} />
@@ -92,7 +96,7 @@ function App() {
           <ScrollToTop />
           <CartProvider>
             <AuthenticatedApp />
-            <CartDrawer />
+            {commerceEnabled && <CartDrawer />}
           </CartProvider>
         </Router>
         <Toaster />

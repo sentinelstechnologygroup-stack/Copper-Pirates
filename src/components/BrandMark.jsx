@@ -1,0 +1,1 @@
+export default function BrandMark(){return <span className="inline-flex flex-col"><span className="font-display italic font-semibold text-2xl sm:text-3xl leading-[.85] text-[#e0b678]">Copper Pirates</span><span className="font-label text-[9px] tracking-[.35em] text-parchment mt-2">Montana Rum</span></span>;}

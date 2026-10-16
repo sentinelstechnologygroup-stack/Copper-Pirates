@@ -11,7 +11,7 @@ import {seed} from '../scripts/seed.mjs';
 let db,wire,pool,auth,server,base,alice,bob,admin;
 const mails=[];
 const password='Copper-Pirates-Test-Password-47';
-const env={BETTER_AUTH_URL:'http://127.0.0.1:5173',BETTER_AUTH_SECRET:randomBytes(32).toString('hex')};
+const env={COMMERCE_ENABLED:'true',BETTER_AUTH_URL:'http://127.0.0.1:5173',BETTER_AUTH_SECRET:randomBytes(32).toString('hex')};
 const origin=env.BETTER_AUTH_URL;
 async function call(path,{method='GET',body,cookie,requestOrigin=origin}={}){
  const response=await fetch(base+path,{method,headers:{Origin:requestOrigin,...(body?{'Content-Type':'application/json'}:{}),...(cookie?{Cookie:cookie}:{})},...(body?{body:JSON.stringify(body)}:{})});
@@ -146,4 +146,18 @@ test('public form rate limits use persistent SQL buckets',async()=>{
  // A prior public review already consumed one slot in this isolated database.
  for(let i=0;i<4;i++)assert.equal((await call('/api/reviews/submit',{method:'POST',body})).status,201);
  assert.equal((await call('/api/reviews/submit',{method:'POST',body})).status,429);
+});
+
+test('trade inquiries validate consent, persist business fields, and support admin follow-up',async()=>{
+ const body={name:'Trade Contact',email:'trade@example.com',company:'Example Distribution',territory:'Montana and neighboring markets',business_type:'Distributor',interest:'Sample request',message:'Please share product information.',consent:true,website:''};
+ assert.equal((await call('/api/distributor-inquiries',{method:'POST',body:{...body,consent:false}})).status,400);
+ const r=await call('/api/distributor-inquiries',{method:'POST',body});assert.equal(r.status,201);
+ const list=await call('/api/admin/inquiries',{cookie:admin.cookie});const record=list.data.items.find(v=>v.id===r.data.id);assert.equal(record.company,body.company);assert.equal(record.inquiry_type,'distribution');assert.ok(record.consent_at);
+ assert.equal((await call('/api/admin/inquiries/'+r.data.id,{method:'PATCH',cookie:alice.cookie,body:{status:'contacted'}})).status,403);
+ assert.equal((await call('/api/admin/inquiries/'+r.data.id,{method:'PATCH',cookie:admin.cookie,body:{status:'contacted',follow_up_notes:'Send approved spec sheet.'}})).status,200);
+ const row=(await call('/api/admin/inquiries',{cookie:admin.cookie})).data.items.find(v=>v.id===r.data.id);assert.equal(row.status,'contacted');assert.equal(row.follow_up_notes,'Send approved spec sheet.');
+});
+test('relaunch defaults deny order creation and demo payment mutation on the server',async()=>{
+ const restricted=createApp({pool,auth,env:{...env,COMMERCE_ENABLED:undefined}}).listen(0,'127.0.0.1');await new Promise(r=>restricted.once('listening',r));
+ try{for(const path of ['/api/orders','/api/payment-methods/demo','/api/auth/sign-up/email']){const r=await fetch('http://127.0.0.1:'+restricted.address().port+path,{method:'POST',headers:{Origin:origin,'Content-Type':'application/json',Cookie:alice.cookie},body:'{}'});assert.equal(r.status,403);}}finally{await new Promise(r=>restricted.close(r));}
 });
