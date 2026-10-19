@@ -8,7 +8,7 @@ The proposed label proof is credited to Treeline Creative. Product specification
 
 Standalone Copper Pirates Distillery storefront and backend. Vite + React, Express, Better Auth, PostgreSQL, optional Vercel Blob uploads and Resend email. No Base44 SDK, build plugin, API, hosted media, or runtime is required.
 
-The current site is a review model: eight sample spirits, supplied cocktail ingredient lists, approved pirate favicon, and highlighted owner-information placeholders. Every order is explicitly a **demo**. This backend cannot charge a card or authorize alcohol fulfillment.
+The current site is a review model: eight sample spirits, supplied cocktail ingredient lists, copper script logo and CP monogram favicon, and highlighted owner-information placeholders. Every order is explicitly a **demo**. This backend cannot charge a card or authorize alcohol fulfillment.
 
 ## Run locally
 
@@ -55,3 +55,7 @@ npm run test:browser
 API integration tests use real Better Auth handlers, cookies and SQL through an isolated PGlite PostgreSQL engine. CI repeats them against PostgreSQL 17 via TEST_DATABASE_URL. No mock authentication is used. Tests cover verification/logout/reset/deletion, account isolation, role escalation, admin mutation, pricing, duplicate requests, availability, moderation, inquiries, and origin rejection.
 
 See [deployment instructions](docs/DEPLOYMENT.md) and [migration status](docs/HARDENING-AND-MIGRATION.md). Vercel serves the static frontend and `api/index.mjs` function. The server also runs on any Node host with PostgreSQL.
+
+## Brand artwork
+
+The October 19, 2026 owner-supplied Copper Pirates script reference was refined into the transparent `public/images/copper-pirates-logo-master.png` and optimized web export `copper-pirates-logo.png`. The shared BrandMark displays it in the header, footer and age confirmation. The matching CP monogram has a master in `public/images/copper-pirates-monogram-master.png`, PNG favicon sizes 16/32/48/192/512, a multi-size ICO and 180px Apple touch icon. Browser links use the cp3 revision to refresh prior icons.

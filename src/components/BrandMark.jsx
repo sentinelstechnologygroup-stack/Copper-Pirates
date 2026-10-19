@@ -1,1 +1,2 @@
-export default function BrandMark(){return <span className="inline-flex flex-col"><span className="font-display italic font-semibold text-2xl sm:text-3xl leading-[.85] text-[#e0b678]">Copper Pirates</span><span className="font-label text-[9px] tracking-[.35em] text-parchment mt-2">Montana Rum</span></span>;}
+export default function BrandMark(){return <img src="/images/copper-pirates-logo.png" alt="Copper Pirates Montana Rum" className="block h-16 w-auto max-w-[145px] object-contain" width="900" height="579"/>;}
+

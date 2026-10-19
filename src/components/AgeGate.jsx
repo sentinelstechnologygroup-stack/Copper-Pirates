@@ -1,3 +1,4 @@
+import BrandMark from "@/components/BrandMark";
 import { useEffect, useState, useRef } from "react";
 import { distillery } from "@/data/spirits";
 
@@ -61,6 +62,7 @@ export default function AgeGate() {
           </div>
         ) : (
           <div className="animate-fade-in">
+            <div className="flex justify-center mb-6"><BrandMark /></div>
             <p className="font-label text-xs text-copper mb-6">
               Copper Pirates Distillery · Kalispell, MT
             </p>
