@@ -59,3 +59,5 @@ See [deployment instructions](docs/DEPLOYMENT.md) and [migration status](docs/HA
 ## Brand artwork
 
 The October 19, 2026 owner-supplied Copper Pirates script reference was refined into the transparent `public/images/copper-pirates-logo-master.png` and optimized web export `copper-pirates-logo.png`. The shared BrandMark displays it in the header, footer and age confirmation. The matching CP monogram has a master in `public/images/copper-pirates-monogram-master.png`, PNG favicon sizes 16/32/48/192/512, a multi-size ICO and 180px Apple touch icon. Browser links use the cp3 revision to refresh prior icons.
+
+The home and rum pages use the supplied round bottle visualization (`public/images/copper-pirates-bottle.png`) in place of the label proof. Header and footer wordmarks are enlarged on cream fields for contrast.

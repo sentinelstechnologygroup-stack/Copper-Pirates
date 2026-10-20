@@ -30,8 +30,8 @@ export default function Navbar() {
     <header
       className="fixed top-0 inset-x-0 z-50 bg-[#101416] border-b border-[#e7c18d]/30 shadow-lg [&_a:focus-visible]:outline [&_a:focus-visible]:outline-2 [&_a:focus-visible]:outline-offset-4 [&_a:focus-visible]:outline-[#ffd092] [&_button:focus-visible]:outline [&_button:focus-visible]:outline-2 [&_button:focus-visible]:outline-[#ffd092]"
     >
-      <nav className="mx-auto max-w-7xl px-4 sm:px-6 xl:px-10 flex items-center justify-between gap-3 h-20">
-        <Link to="/" className="group flex items-center gap-3">
+      <nav className="mx-auto max-w-7xl px-4 sm:px-6 xl:px-10 flex items-center justify-between gap-3 h-28">
+        <Link to="/" className="group flex shrink-0 items-center gap-3">
           <BrandMark />
         </Link>
 
